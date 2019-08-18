@@ -9,10 +9,6 @@
         <!-- Right aligned nav items -->
         <b-navbar-nav class="ml-auto">
           <b-nav-form>
-            <b-form-input v-model.trim="searchInput" class="mr-sm-2" placeholder="Search Artist/Album..."></b-form-input>
-          </b-nav-form>
-
-          <b-nav-form>
             <b-form-group>
               <b-form-radio-group
                 id="btn-radios-1"
@@ -31,6 +27,10 @@
             </b-form-group>
           </b-nav-form>
         </b-navbar-nav>
+
+        <b-nav-form>
+          <b-form-input v-model.trim="searchInput" class="mr-sm-2" placeholder="Search Artist/Album..."></b-form-input>
+        </b-nav-form>
       </b-collapse>
     </b-navbar>
 
