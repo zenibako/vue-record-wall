@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <div v-on:mouseenter="showSearch = true" v-on:mouseleave="showSearch = false">
-      <b-navbar fixed="bottom" type="light" variant="light">
+    <div>
+      <b-navbar fixed="top" type="light" variant="light">
         <div v-if="showSearch">
           <b-nav-form>
             <b-form-input v-model.trim="searchInput" class="mr-sm-2" placeholder="Search Artist/Album..."></b-form-input>
@@ -12,15 +12,10 @@
     </div>
 
     <div class="records" v-if="allRecords.length > 0">
-      <b-container fluid class="bv-example-row">
+      <b-container fluid class="wide-container">
         <b-row no-gutters>
           <b-col sm="3" v-for="record in viewRecords" v-bind:key="record.id">
-            <div v-on:mouseenter="record.showInfo = true" v-on:mouseleave="record.showInfo = false">
-              <div v-if="record.showInfo" class="info-area">
-                {{ record.title }}
-              </div>
-              <b-img fluid-grow v-bind:src="record.imageUrl"></b-img>
-            </div>
+            <RecordTile v-bind:record="record"></RecordTile>
           </b-col>
         </b-row>
       </b-container>
@@ -32,8 +27,10 @@
 </template>
 
 <script>
+    import RecordTile from "./RecordTile";
     export default {
         name: 'app',
+        components: {RecordTile},
         data() {
             return {
                 msg: 'Welcome to Your Vue.js App',
@@ -44,7 +41,7 @@
                 allRecords: [],
                 tracklist: [],
                 searchInput: '',
-                showSearch: false
+                showSearch: true
             }
         },
         computed: {
@@ -121,6 +118,7 @@
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
     color: #2c3e50;
+    padding-top: 27px;
   }
 
   h1, h2 {
@@ -141,9 +139,9 @@
     color: #42b983;
   }
 
-  .container-fluid {
-    padding-left: 0;
-    padding-right: 0;
+  .wide-container {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
   }
 
   .col { border: 1px solid transparent; }
