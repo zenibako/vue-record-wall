@@ -229,4 +229,8 @@
   }
 
   .col { border: 1px solid transparent; }
+
+  .records {
+    background: black;
+  }
 </style>
