@@ -1,5 +1,8 @@
 var path = require('path')
 var webpack = require('webpack')
+const { VueLoaderPlugin } = require('vue-loader')
+const UglifyJsPlugin = require("uglifyjs-3-webpack-plugin")
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
   entry: './src/main.js',
@@ -14,16 +17,17 @@ module.exports = {
         test: /\.css$/,
         use: [
           'vue-style-loader',
-          'css-loader'
-        ],
-      },      {
-        test: /\.vue$/,
-        loader: 'vue-loader',
-        options: {
-          loaders: {
+          {
+            loader: 'css-loader',
+            options: {
+              sourceMap: true
+            }
           }
-          // other vue-loader options go here
-        }
+        ],
+      },
+      {
+        test: /\.vue$/,
+        use: 'vue-loader'
       },
       {
         test: /\.js$/,
@@ -54,7 +58,10 @@ module.exports = {
   performance: {
     hints: false
   },
-  devtool: '#eval-source-map'
+  devtool: '#eval-source-map',
+  plugins: [
+    new VueLoaderPlugin()
+  ]
 }
 
 if (process.env.NODE_ENV === 'production') {
@@ -66,14 +73,35 @@ if (process.env.NODE_ENV === 'production') {
         NODE_ENV: '"production"'
       }
     }),
-    new webpack.optimize.UglifyJsPlugin({
-      sourceMap: true,
-      compress: {
-        warnings: false
+    new UglifyJsPlugin({
+      uglifyOptions: {
+        warnings: false,
+        ie8: false,
+        output: {
+          comments: false
+        },
+        sourceMap: true
       }
     }),
     new webpack.LoaderOptionsPlugin({
-      minimize: true
-    })
+      minimize: true,
+    }),
+    // generate dist index.html with correct asset hash for caching.
+    // you can customize output by editing /index.html
+    // see https://github.com/ampedandwired/html-webpack-plugin
+    new HtmlWebpackPlugin({
+      filename: 'index.html',
+      template: 'index.html',
+      inject: true,
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true,
+        removeAttributeQuotes: true
+        // more options:
+        // https://github.com/kangax/html-minifier#options-quick-reference
+      },
+      // necessary to consistently work with multiple chunks via CommonsChunkPlugin
+      chunksSortMode: 'dependency'
+    }),
   ])
 }
