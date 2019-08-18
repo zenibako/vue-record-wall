@@ -1,7 +1,8 @@
 var path = require('path')
 var webpack = require('webpack')
 const { VueLoaderPlugin } = require('vue-loader')
-const UglifyJsPlugin = require("uglifyjs-3-webpack-plugin");
+const UglifyJsPlugin = require("uglifyjs-3-webpack-plugin")
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
   entry: './src/main.js',
@@ -16,7 +17,12 @@ module.exports = {
         test: /\.css$/,
         use: [
           'vue-style-loader',
-          'css-loader'
+          {
+            loader: 'css-loader',
+            options: {
+              sourceMap: true
+            }
+          }
         ],
       },
       {
@@ -73,11 +79,29 @@ if (process.env.NODE_ENV === 'production') {
         ie8: false,
         output: {
           comments: false
-        }
+        },
+        sourceMap: true
       }
     }),
     new webpack.LoaderOptionsPlugin({
-      minimize: true
+      minimize: true,
+    }),
+    // generate dist index.html with correct asset hash for caching.
+    // you can customize output by editing /index.html
+    // see https://github.com/ampedandwired/html-webpack-plugin
+    new HtmlWebpackPlugin({
+      filename: 'index.html',
+      template: 'index.html',
+      inject: true,
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true,
+        removeAttributeQuotes: true
+        // more options:
+        // https://github.com/kangax/html-minifier#options-quick-reference
+      },
+      // necessary to consistently work with multiple chunks via CommonsChunkPlugin
+      chunksSortMode: 'dependency'
     }),
   ])
 }
