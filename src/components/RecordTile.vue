@@ -3,7 +3,7 @@
     <b-img fluid-grow v-bind:src="record.imageUrl" class="image"></b-img>
     <div class="overlay">
       <div class="text">
-        <div>
+        <div class="font-weight-bold">
           {{ formattedArtists }}
         </div>
         <div class="w-100"></div>
