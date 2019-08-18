@@ -1,24 +1,32 @@
 <template>
   <div id="app">
-    <b-navbar type="light" variant="light">
-      <b-nav-form>
-        <b-form-input v-model.trim="searchInput" class="mr-sm-2" placeholder="Search"></b-form-input>
-      </b-nav-form>
-    </b-navbar>
+    <div v-on:mouseenter="showSearch = true" v-on:mouseleave="showSearch = false">
+      <b-navbar fixed="bottom" type="light" variant="light">
+        <div v-if="showSearch">
+          <b-nav-form>
+            <b-form-input v-model.trim="searchInput" class="mr-sm-2" placeholder="Search Artist/Album..."></b-form-input>
+          </b-nav-form>
+        </div>
+        <span v-else class="text-center" style="font-size: 10pt">Hover to search...</span>
+      </b-navbar>
+    </div>
 
     <div class="records" v-if="allRecords.length > 0">
       <b-container fluid class="bv-example-row">
         <b-row no-gutters>
-          <b-col v-bind:sm="recordColWidth" v-for="record in viewRecords" v-bind:key="record.id">
-            <b-img fluid-grow v-bind:src="record.imageUrl"></b-img>
+          <b-col sm="3" v-for="record in viewRecords" v-bind:key="record.id">
+            <div v-on:mouseenter="record.showInfo = true" v-on:mouseleave="record.showInfo = false">
+              <div v-if="record.showInfo" class="info-area">
+                {{ record.title }}
+              </div>
+              <b-img fluid-grow v-bind:src="record.imageUrl"></b-img>
+            </div>
           </b-col>
         </b-row>
       </b-container>
     </div>
-    <div v-else>
-      <div class="d-flex justify-content-center mb-3">
-        <b-spinner variant="primary" label="Spinning"></b-spinner>
-      </div>
+    <div v-else class="d-flex justify-content-center align-items-center">
+      <b-spinner variant="primary" label="Spinning"></b-spinner>
     </div>
   </div>
 </template>
@@ -36,7 +44,7 @@
                 allRecords: [],
                 tracklist: [],
                 searchInput: '',
-                recordColWidth: 3
+                showSearch: false
             }
         },
         computed: {
