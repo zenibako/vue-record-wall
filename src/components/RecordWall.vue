@@ -8,7 +8,7 @@
       <b-collapse id="nav-collapse" is-nav>
         <!-- Right aligned nav items -->
         <b-navbar-nav class="ml-auto">
-          <b-nav-form>
+          <b-nav-form class="pr-3">
             <b-form-group>
               <b-form-radio-group
                 id="btn-radios-1"
@@ -28,7 +28,7 @@
           </b-nav-form>
         </b-navbar-nav>
 
-        <b-nav-form>
+        <b-nav-form class="">
           <b-form-input v-model.trim="searchInput" class="mr-sm-2" placeholder="Search Artist/Album..."></b-form-input>
         </b-nav-form>
       </b-collapse>
@@ -76,12 +76,12 @@
                 var descOption = { value: 'desc'};
                 switch (criteria) {
                   case "artist":
-                      ascOption.text = 'A -> Z';
-                      descOption.text = 'Z -> A';
+                      ascOption.text = 'A → Z';
+                      descOption.text = 'Z → A';
                       break;
                   case "dateAdded":
-                      ascOption.text = 'Old -> New';
-                      descOption.text = 'New -> Old';
+                      ascOption.text = 'Old → New';
+                      descOption.text = 'New → Old';
                       break;
                 }
                 return [ascOption, descOption];
