@@ -170,8 +170,9 @@
                     var comparison;
                     switch (criteria) {
                         case "artist":
-                            var nameA = a.artists[0].name.toUpperCase().replace('THE ', '');
-                            var nameB = b.artists[0].name.toUpperCase().replace('THE ', '');
+                            var nameA = a.artists[0].name.toUpperCase().replace(/^(THE )/,'');
+                            var nameB = b.artists[0].name.toUpperCase().replace(/^(THE )/,'');
+
                             if (nameA > nameB) {
                                 comparison = (isDesc ? -1 : 1);
                             } else if (nameA < nameB) {
