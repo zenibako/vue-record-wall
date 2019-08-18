@@ -1,14 +1,23 @@
 <template>
   <div id="app">
-    <div class="records">
-      <button v-on:click="fetchRecordData">GET BEAUTIFUL ARTWORK</button>
-      <div>
-        <div v-for="record in records">
-          <img v-bind:src="record.imageUrl">
-          <div>
-            {{ record.title }}
-          </div>
-        </div>
+    <b-navbar type="light" variant="light">
+      <b-nav-form>
+        <b-form-input v-model.trim="searchInput" class="mr-sm-2" placeholder="Search"></b-form-input>
+      </b-nav-form>
+    </b-navbar>
+
+    <div class="records" v-if="allRecords.length > 0">
+      <b-container fluid class="bv-example-row">
+        <b-row no-gutters>
+          <b-col sm="3" v-for="record in viewRecords" v-bind:key="record.id">
+            <b-img fluid-grow v-bind:src="record.imageUrl"></b-img>
+          </b-col>
+        </b-row>
+      </b-container>
+    </div>
+    <div v-else>
+      <div class="d-flex justify-content-center mb-3">
+        <b-spinner variant="primary" label="Spinning"></b-spinner>
       </div>
     </div>
   </div>
@@ -24,13 +33,43 @@
                 consumerKey: 'qbFjUPJhAePbfQdqxuzG',
                 consumerSecret: 'vaThtTnxAAbRZBSpMEzaOpYcbtWrQeTa',
                 testRelease: 176126,
-                records: [],
-                tracklist: []
+                allRecords: [],
+                tracklist: [],
+                searchInput: ''
             }
         },
-
+        computed: {
+            viewRecords: function () {
+                var newViewRecords = [];
+                console.log("Input length is " + this.searchInput.length);
+                if (this.searchInput.length > 0) {
+                    var filterText = this.searchInput.toUpperCase();
+                    newViewRecords = this.allRecords.filter(function (record) {
+                        var searchTextArray = [];
+                        searchTextArray.push(record.title);
+                        record.artists.forEach(function (artist) {
+                            searchTextArray.push(artist.name);
+                        });
+                        var textToSearch = searchTextArray.join('|').toUpperCase();
+                        //console.log("Searching for " + filterText + " in:");
+                        //console.log(textToSearch);
+                        return textToSearch.indexOf(filterText) > -1;
+                    });
+                    console.log("Found " + newViewRecords.length + " records for " + filterText + "!");
+                    //console.log("Records filtered for " + this.searchInput + ":");
+                    //console.log(newViewRecords);
+                } else {
+                    newViewRecords = this.allRecords;
+                    console.log("No filter input, so no search");
+                }
+                return newViewRecords;
+            }
+        },
+        mounted() {
+            this.fetchRecordData();
+        },
         methods: {
-            fetchRecordData: function (event) {
+            fetchRecordData: function () {
                 this.getCollectionForUser('chanderson90', this.setDataFromDiscogs);
             },
             getReleaseFromDiscogs: function (releaseId, callback) {
@@ -44,23 +83,24 @@
                 return col.getReleases(username, 0, {page: 1, per_page: 9999}, callback);
             },
             setDataFromDiscogs: function (err, data) {
+                console.log("Discogs data returned:");
                 console.log(data);
                 var releases = data.releases;
                 if (releases) {
                     var records = [];
                     releases.forEach(function (release) {
                         var record = {
+                            id: release.id,
                             title: release.basic_information.title,
                             year: release.basic_information.year,
-                            imageUrl: release.basic_information.cover_image
+                            imageUrl: release.basic_information.cover_image,
+                            artists: release.basic_information.artists
                         };
                         records.push(record);
                     });
-                    this.records = records;
+                    this.allRecords = records;
                 }
-                //this.recordData
-                //this.tracklist = data.tracklist;
-            },
+            }
         }
     }
 </script>
@@ -72,7 +112,6 @@
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
     color: #2c3e50;
-    margin-top: 60px;
   }
 
   h1, h2 {
@@ -92,4 +131,11 @@
   a {
     color: #42b983;
   }
+
+  .container-fluid {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .col { border: 1px solid transparent; }
 </style>
