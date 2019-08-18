@@ -17,6 +17,10 @@
                 buttons
                 name="radios-btn-default">
               </b-form-radio-group>
+            </b-form-group>
+          </b-nav-form>
+          <b-nav-form class="pr-3">
+            <b-form-group>
               <b-form-radio-group
                 id="btn-radios-2"
                 v-model="sortCriteria"
