@@ -7,7 +7,7 @@
   "private": true,
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack-dev-server --open --hot",
-    "build": "cross-env NODE_ENV=production webpack --progress --hide-modules"
+    "build": "cross-env NODE_ENV=production webpack --progress --hide-modules --mode production"
   },
   "dependencies": {
     "bootstrap": "^4.3.1",
@@ -15,7 +15,8 @@
     "mem": ">=4.0.0",
     "querystring": "^0.2.0",
     "querystring-browser": "^1.0.4",
-    "vue": "^2.6.10"
+    "vue": "^2.6.10",
+    "vue-router": "^3.1.2"
   },
   "browserslist": [
     "> 1%",
@@ -31,9 +32,12 @@
     "css-loader": "^3.2.0",
     "disconnect": "^1.2.1",
     "file-loader": "^1.1.4",
-    "vue-loader": "^13.0.5",
-    "vue-template-compiler": "^2.4.4",
-    "webpack": "^3.6.0",
-    "webpack-dev-server": "^2.9.1"
+    "uglifyjs-3-webpack-plugin": "^1.2.4",
+    "vue-loader": "^15.7.1",
+    "vue-style-loader": "^4.1.2",
+    "vue-template-compiler": "^2.6.10",
+    "webpack": "^4.39.2",
+    "webpack-cli": "^3.3.7",
+    "webpack-dev-server": "^3.8.0"
   }
 }
