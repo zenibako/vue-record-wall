@@ -2,12 +2,31 @@
   <div id="app">
     <div>
       <b-navbar fixed="top" type="light" variant="light">
-        <div v-if="showSearch">
+        <b-navbar-nav>
           <b-nav-form>
             <b-form-input v-model.trim="searchInput" class="mr-sm-2" placeholder="Search Artist/Album..."></b-form-input>
           </b-nav-form>
-        </div>
-        <span v-else class="text-center" style="font-size: 10pt">Hover to search...</span>
+        </b-navbar-nav>
+
+        <!-- Right aligned nav items -->
+        <b-navbar-nav class="ml-auto">
+          <b-form-group>
+            <b-form-radio-group
+              id="btn-radios-1"
+              v-model="sortDirection"
+              :options="sortDirectionOptions"
+              buttons
+              name="radios-btn-default">
+            </b-form-radio-group>
+            <b-form-radio-group
+              id="btn-radios-2"
+              v-model="sortCriteria"
+              :options="sortCriteriaOptions"
+              buttons
+              name="radios-btn-default">
+            </b-form-radio-group>
+          </b-form-group>
+        </b-navbar-nav>
       </b-navbar>
     </div>
 
@@ -33,18 +52,36 @@
         components: {RecordTile},
         data() {
             return {
-                msg: 'Welcome to Your Vue.js App',
                 token: 'VUepyybcatMhKAEXHglQvvyvUsbBuRLPNIvymfdK',
-                consumerKey: 'qbFjUPJhAePbfQdqxuzG',
-                consumerSecret: 'vaThtTnxAAbRZBSpMEzaOpYcbtWrQeTa',
-                testRelease: 176126,
+                consumerKey: '',
+                consumerSecret: '',
                 allRecords: [],
-                tracklist: [],
                 searchInput: '',
-                showSearch: true
+                sortCriteria: 'artist',
+                sortCriteriaOptions: [
+                    { text: 'Artist', value: 'artist' },
+                    { text: 'Date Added', value: 'dateAdded' }
+                ],
+                sortDirection: 'asc'
             }
         },
         computed: {
+            sortDirectionOptions: function () {
+                var criteria = this.sortCriteria;
+                var ascOption = { value: 'asc'};
+                var descOption = { value: 'desc'};
+                switch (criteria) {
+                  case "artist":
+                      ascOption.text = 'A -> Z';
+                      descOption.text = 'Z -> A';
+                      break;
+                  case "dateAdded":
+                      ascOption.text = 'Old -> New';
+                      descOption.text = 'New -> Old';
+                      break;
+                }
+                return [ascOption, descOption];
+            },
             viewRecords: function () {
                 var newViewRecords = [];
                 console.log("Input length is " + this.searchInput.length);
@@ -69,6 +106,14 @@
                     console.log("No filter input, so no search");
                 }
                 return newViewRecords;
+            }
+        },
+        watch: {
+            sortCriteria: function () {
+                this.sortRecords();
+            },
+            sortDirection: function () {
+                this.sortRecords();
             }
         },
         mounted() {
@@ -100,12 +145,43 @@
                             title: release.basic_information.title,
                             year: release.basic_information.year,
                             imageUrl: release.basic_information.cover_image,
-                            artists: release.basic_information.artists
+                            artists: release.basic_information.artists,
+                            dateAdded: release.date_added,
+
                         };
                         records.push(record);
                     });
                     this.allRecords = records;
+                    this.sortRecords();
                 }
+            },
+            sortRecords: function () {
+                var criteria = this.sortCriteria;
+                var isDesc = ( this.sortDirection === 'desc' );
+                this.allRecords.sort(function (a, b) {
+                    var comparison;
+                    switch (criteria) {
+                        case "artist":
+                            var nameA = a.artists[0].name.toUpperCase();
+                            var nameB = b.artists[0].name.toUpperCase();
+                            if (nameA > nameB) {
+                                comparison = (isDesc ? -1 : 1);
+                            } else if (nameA < nameB) {
+                                comparison = (isDesc ? 1 : -1);
+                            }
+                            break;
+                        case "dateAdded":
+                            if (isDesc) {
+                                comparison = new Date(b.dateAdded) - new Date(a.dateAdded);
+                            } else {
+                                comparison = new Date(a.dateAdded) - new Date(b.dateAdded);
+                            }
+                            break;
+                        default:
+                            comparison = 0;
+                    }
+                    return comparison;
+                });
             }
         }
     }
