@@ -1,42 +1,44 @@
 <template>
   <div id="app">
-    <b-navbar toggleable="lg" fixed="top" type="light" variant="light">
-      <b-navbar-brand href="#">My Record Wall</b-navbar-brand>
+    <div class="records" v-if="allRecords.length > 0">
+      <b-navbar toggleable="lg" fixed="top" type="light" variant="light">
+        <b-navbar-brand href="#">My Record Wall</b-navbar-brand>
 
-      <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+        <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
-      <b-collapse id="nav-collapse" is-nav>
-        <!-- Right aligned nav items -->
-        <b-navbar-nav class="ml-auto">
-          <b-nav-form class="pr-3">
-            <b-form-group>
-              <b-form-radio-group
-                id="btn-radios-1"
-                v-model="sortDirection"
-                :options="sortDirectionOptions"
-                buttons
-                name="radios-btn-default">
-              </b-form-radio-group>
-            </b-form-group>
+        <b-collapse id="nav-collapse" is-nav>
+          <!-- Right aligned nav items -->
+          <b-navbar-nav class="ml-auto">
+            <b-nav-form class="pr-3">
+              <b-form-group>
+                <b-form-radio-group
+                  id="btn-radios-1"
+                  v-model="sortDirection"
+                  :options="sortDirectionOptions"
+                  buttons
+                  name="radios-btn-default">
+                </b-form-radio-group>
+              </b-form-group>
+            </b-nav-form>
+            <b-nav-form class="pr-3">
+              <b-form-group>
+                <b-form-radio-group
+                  id="btn-radios-2"
+                  v-model="sortCriteria"
+                  :options="sortCriteriaOptions"
+                  buttons
+                  name="radios-btn-default">
+                </b-form-radio-group>
+              </b-form-group>
+            </b-nav-form>
+          </b-navbar-nav>
+
+          <b-nav-form class="">
+            <b-form-input v-model.trim="searchInput" class="mr-sm-2" placeholder="Search Artist/Album..."></b-form-input>
           </b-nav-form>
-          <b-nav-form class="pr-3">
-            <b-form-group>
-              <b-form-radio-group
-                id="btn-radios-2"
-                v-model="sortCriteria"
-                :options="sortCriteriaOptions"
-                buttons
-                name="radios-btn-default">
-              </b-form-radio-group>
-            </b-form-group>
-          </b-nav-form>
-        </b-navbar-nav>
-
-        <b-nav-form class="">
-          <b-form-input v-model.trim="searchInput" class="mr-sm-2" placeholder="Search Artist/Album..."></b-form-input>
-        </b-nav-form>
-      </b-collapse>
-    </b-navbar>
+        </b-collapse>
+      </b-navbar>
+    </div>
 
     <div class="records" v-if="allRecords.length > 0">
       <b-container fluid class="wide-container">
