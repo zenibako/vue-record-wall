@@ -9,7 +9,7 @@
     <div class="records" v-if="allRecords.length > 0">
       <b-container fluid class="bv-example-row">
         <b-row no-gutters>
-          <b-col sm="3" v-for="record in viewRecords" v-bind:key="record.id">
+          <b-col v-bind:sm="recordColWidth" v-for="record in viewRecords" v-bind:key="record.id">
             <b-img fluid-grow v-bind:src="record.imageUrl"></b-img>
           </b-col>
         </b-row>
@@ -35,7 +35,8 @@
                 testRelease: 176126,
                 allRecords: [],
                 tracklist: [],
-                searchInput: ''
+                searchInput: '',
+                recordColWidth: 3
             }
         },
         computed: {
