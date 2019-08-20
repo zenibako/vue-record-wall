@@ -13,6 +13,10 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 
 const { VueLoaderPlugin } = require('vue-loader')
 
+const env = process.env.NODE_ENV === 'testing'
+  ? require('../config/test.env')
+  : require('../config/prod.env')
+
 const webpackConfig = merge(baseWebpackConfig, {
   module: {
     rules: [
@@ -39,9 +43,7 @@ const webpackConfig = merge(baseWebpackConfig, {
   plugins: [
     // http://vuejs.github.io/vue-loader/en/workflow/production.html
     new webpack.DefinePlugin({
-      'process.env': {
-        NODE_ENV: '"production"'
-      }
+      'process.env': env
     }),
     new UglifyJsPlugin({
       uglifyOptions: {
