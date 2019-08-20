@@ -4,7 +4,7 @@ const { VueLoaderPlugin } = require('vue-loader')
 const UglifyJsPlugin = require("uglifyjs-3-webpack-plugin")
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
-const env = require('./config/dev.env')
+const env = require('./config/dev_local.env')
 
 module.exports = {
   entry: './src/main.js',
