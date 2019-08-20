@@ -64,7 +64,8 @@
                     { text: 'Artist', value: 'artist' },
                     { text: 'Date Added', value: 'dateAdded' }
                 ],
-                sortDirection: 'asc'
+                sortDirection: 'asc',
+                setlistFmResults: []
             }
         },
         computed: {
@@ -120,10 +121,11 @@
         },
         mounted() {
             this.fetchRecordData();
+            this.fetchSetlistFmData();
         },
         methods: {
             fetchRecordData: function () {
-                this.getCollectionForUser('chanderson90', this.setDataFromDiscogs);
+                this.getCollectionForUser(process.env.DISCOGS_USERNAME, this.setDataFromDiscogs);
             },
             getReleaseFromDiscogs: function (releaseId, callback) {
                 var Discogs = require('disconnect').Client;
@@ -156,6 +158,30 @@
                     this.allRecords = records;
                     this.sortRecords();
                 }
+            },
+            fetchSetlistFmData: function () {
+                this.getDataFromSetlistFm(process.env.SETLISTFM_USERNAME, this.setDataFromSetlistFm);
+            },
+            getDataFromSetlistFm: function (username, callback) {
+                console.log("Attempting to get setlists for " + username + "...");
+
+                var Setlistfm = require('setlistfm-js');
+                var setlistfm = new Setlistfm({
+                    key: process.env.SETLISTFM_KEY
+                });
+
+                setlistfm.getUserAttended(username, {
+                    p: 1
+                })
+                    .then(callback)
+                    .catch(function(error) {
+                        // Returns error
+                    });
+            },
+            setDataFromSetlistFm: function (data) {
+                console.log("Setlist.fm data returned:");
+                console.log(data);
+                this.setlistFmResults = data;
             },
             sortRecords: function () {
                 var criteria = this.sortCriteria;
