@@ -18,17 +18,12 @@
                   buttons
                   name="radios-btn-default">
                 </b-form-radio-group>
-              </b-form-group>
-            </b-nav-form>
-            <b-nav-form class="pr-3">
-              <b-form-group>
-                <b-form-radio-group
-                  id="btn-radios-2"
+
+                <b-form-select
                   v-model="sortCriteria"
                   :options="sortCriteriaOptions"
-                  buttons
-                  name="radios-btn-default">
-                </b-form-radio-group>
+                  name="sort-criteria-select">
+                </b-form-select>
               </b-form-group>
             </b-nav-form>
           </b-navbar-nav>
@@ -44,7 +39,7 @@
       <b-container fluid class="wide-container">
         <b-row no-gutters>
           <b-col sm="3" v-for="record in viewRecords" v-bind:key="record.id">
-            <RecordTile v-bind:record="record"></RecordTile>
+            <RecordTile v-bind:record="record" v-bind:id="record.id"></RecordTile>
           </b-col>
         </b-row>
       </b-container>
@@ -62,9 +57,6 @@
         components: {RecordTile},
         data() {
             return {
-                token: 'VUepyybcatMhKAEXHglQvvyvUsbBuRLPNIvymfdK',
-                consumerKey: '',
-                consumerSecret: '',
                 allRecords: [],
                 searchInput: '',
                 sortCriteria: 'artist',
@@ -140,7 +132,7 @@
             },
             getCollectionForUser: function (username, callback) {
                 var Discogs = require('disconnect').Client;
-                var col = new Discogs({userToken: this.token}).user().collection();
+                var col = new Discogs({userToken: process.env.DISCOGS_TOKEN}).user().collection();
                 return col.getReleases(username, 0, {page: 1, per_page: 9999}, callback);
             },
             setDataFromDiscogs: function (err, data) {
@@ -157,7 +149,7 @@
                             imageUrl: release.basic_information.cover_image,
                             artists: release.basic_information.artists,
                             dateAdded: release.date_added,
-
+                            notes: release.notes
                         };
                         records.push(record);
                     });

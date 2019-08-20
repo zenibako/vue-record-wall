@@ -10,16 +10,26 @@
         <div>
           {{ record.title }}
         </div>
+        <div class="pt-4">
+          <b-button @click="$bvModal.show(modalName)">More info</b-button>
+        </div>
       </div>
+
+      <b-modal v-bind:id="modalName" v-bind:title="record.title">
+        <RecordInfo v-bind:record="record" v-bind:formattedArtists="formattedArtists"></RecordInfo>
+      </b-modal>
     </div>
   </div>
 </template>
 
 <script>
+    import RecordInfo from "./RecordInfo";
     export default {
         name: "RecordTile",
+        components: {RecordInfo},
         props: {
-            record: Object
+            record: Object,
+            id: Number
         },
         data() {
             return {
@@ -27,6 +37,9 @@
             }
         },
         computed: {
+            modalName: function() {
+                return "modal-" + this.id;
+            },
             formattedArtists: function () {
                 var artistArray = [];
                 var artistObjects = this.record.artists;

@@ -4,6 +4,8 @@ const { VueLoaderPlugin } = require('vue-loader')
 const UglifyJsPlugin = require("uglifyjs-3-webpack-plugin")
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
+const env = require('./config/dev.env')
+
 module.exports = {
   entry: './src/main.js',
   output: {
@@ -60,8 +62,17 @@ module.exports = {
   },
   devtool: '#eval-source-map',
   plugins: [
-    new VueLoaderPlugin()
-  ]
+    new VueLoaderPlugin(),
+    new webpack.DefinePlugin({
+      'process.env': env
+    })
+  ],
+  node: {
+    console: true,
+    fs: 'empty',
+    net: 'empty',
+    tls: 'empty'
+  }
 }
 
 if (process.env.NODE_ENV === 'production') {
