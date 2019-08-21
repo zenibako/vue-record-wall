@@ -1,8 +1,13 @@
 <template>
   <div>
-    <p v-for="note in notes">
-      {{ note }}
-    </p>
+    <div v-if="notes.length > 0">
+      <p v-for="note in notes">
+        {{ note }}
+      </p>
+    </div>
+    <div v-else>
+      More info coming soon!
+    </div>
   </div>
 </template>
 
