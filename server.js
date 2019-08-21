@@ -2,6 +2,9 @@ const express = require('express');
 const path = require('path');
 const history = require('connect-history-api-fallback');
 
+const bodyParser = require('body-parser');
+const router = require('./routes/index.js');
+
 const app = express();
 
 const staticFileMiddleware = express.static(path.join(__dirname + '/dist'));
