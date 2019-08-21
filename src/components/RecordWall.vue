@@ -11,14 +11,6 @@
           <b-navbar-nav class="ml-auto">
             <b-nav-form class="pr-3">
               <b-form-group>
-                <b-form-radio-group
-                  id="btn-radios-1"
-                  v-model="sortDirection"
-                  :options="sortDirectionOptions"
-                  buttons
-                  name="radios-btn-default">
-                </b-form-radio-group>
-
                 <b-form-select
                   v-model="selectedSort"
                   name="sort-criteria-select">
@@ -62,8 +54,14 @@
     export default {
         name: 'app',
         components: {RecordTile},
+        props: {
+            inputUserId: '',
+            inputCriteria: '',
+            inputDirection: ''
+        },
         data() {
             return {
+                username: 'chanderson90',
                 allRecords: [],
                 searchInput: '',
                 setlistFmResults: [],
@@ -104,16 +102,32 @@
             selectedSort: function (newSort) {
                 this.sortRecords(newSort.criteria, newSort.direction);
             },
+            inputCriteria: function (criteria) {
+                this.setCriteria(criteria);
+                if (criteria.length > 0) this.sortRecords(criteria, this.selectedSort.direction);
+            },
+            inputDirection: function (direction) {
+                this.setDirection(direction);
+                if (direction.length > 0) this.sortRecords(this.selectedSort.criteria, direction);
+            },
         },
         mounted() {
             this.fetchRecordData();
         },
         methods: {
-            setSortFromUrl: function () {
-
+            setCriteria: function (criteria) {
+                console.log("Criteria: " + criteria);
+                if (criteria && criteria > 0) this.selectedSort.criteria = criteria;
+            },
+            setDirection: function (direction) {
+                console.log("Direction: " + direction);
+                if (direction && direction > 0) this.selectedSort.direction = direction;
             },
             fetchRecordData: function () {
-                this.getCollectionForUser(process.env.DISCOGS_USERNAME, this.setDataFromDiscogs);
+                var inputUser = this.inputUserId;
+                console.log("Username: " + inputUser);
+                if (inputUser && inputUser > 0) this.setCriteria(inputUser);
+                this.getCollectionForUser(this.username, this.setDataFromDiscogs);
             },
             getReleaseFromDiscogs: function (releaseId, callback) {
                 var Discogs = require('disconnect').Client;
@@ -144,7 +158,9 @@
                         records.push(record);
                     });
                     this.allRecords = records;
-                    this.sortRecords();
+                    this.setCriteria(this.inputCriteria);
+                    this.setDirection(this.inputDirection);
+                    this.sortRecords(this.selectedSort.criteria, this.selectedSort.direction);
                 }
             },
             // fetchSetlistFmData: function () {

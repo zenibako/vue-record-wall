@@ -10,7 +10,12 @@ export default new Router(
       {
         path: '/',
         name: 'RecordWall',
-        component: RecordWall
+        component: RecordWall,
+        props: (route) => ({
+          inputUserId: route.query.user,
+          inputCriteria: route.query.sc,
+          inputDirection: route.query.sd
+        })
       }
     ]
   }
