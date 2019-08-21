@@ -116,18 +116,26 @@
         },
         methods: {
             setCriteria: function (criteria) {
-                console.log("Criteria: " + criteria);
-                if (criteria && criteria > 0) this.selectedSort.criteria = criteria;
+                if (criteria && criteria > 0) {
+                    console.log("Set criteria: " + criteria);
+                    this.selectedSort.criteria = criteria;
+                }
             },
             setDirection: function (direction) {
-                console.log("Direction: " + direction);
-                if (direction && direction > 0) this.selectedSort.direction = direction;
+                if (direction && direction > 0) {
+                    console.log("Set direction: " + direction);
+                    this.selectedSort.direction = direction;
+                }
             },
             fetchRecordData: function () {
                 var inputUser = this.inputUserId;
-                console.log("Username: " + inputUser);
-                if (inputUser && inputUser > 0) this.setCriteria(inputUser);
-                this.getCollectionForUser(this.username, this.setDataFromDiscogs);
+                if (inputUser && inputUser > 0) this.username = inputUser;
+                if (this.username) {
+                    console.log("Input username: " + inputUser);
+                    this.getCollectionForUser(this.username, this.setDataFromDiscogs);
+                } else {
+                    console.log('No username provided.');
+                }
             },
             getReleaseFromDiscogs: function (releaseId, callback) {
                 var Discogs = require('disconnect').Client;
@@ -135,6 +143,7 @@
                 return db.getRelease(releaseId, callback);
             },
             getCollectionForUser: function (username, callback) {
+                console.log("Get collection for username " + username + "...");
                 var Discogs = require('disconnect').Client;
                 var col = new Discogs({userToken: process.env.DISCOGS_TOKEN}).user().collection();
                 return col.getReleases(username, 0, {page: 1, per_page: 9999}, callback);
