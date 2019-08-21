@@ -129,7 +129,7 @@
             },
             fetchRecordData: function () {
                 var inputUser = this.inputUserId;
-                if (inputUser && inputUser > 0) this.username = inputUser;
+                if (inputUser && inputUser.length > 0) this.username = inputUser;
                 if (this.username) {
                     console.log("Input username: " + inputUser);
                     this.getCollectionForUser(this.username, this.setDataFromDiscogs);
@@ -167,13 +167,13 @@
                         records.push(record);
                     });
                     this.allRecords = records;
-                    if (this.inputCriteria && this.inputCriteria > 0) {
+                    if (this.inputCriteria && this.inputCriteria.length > 0) {
                         console.log("Input criteria: " + this.inputCriteria);
                         this.setCriteria(this.inputCriteria);
                     } else {
                         console.log('No input criteria provided.');
                     }
-                    if (this.inputDirection && this.inputDirection > 0) {
+                    if (this.inputDirection && this.inputDirection.length > 0) {
                         console.log("Input direction: " + this.inputDirection);
                         this.setDirection(this.inputDirection);
                     } else {
