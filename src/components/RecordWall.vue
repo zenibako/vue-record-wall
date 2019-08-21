@@ -116,13 +116,13 @@
         },
         methods: {
             setCriteria: function (criteria) {
-                if (criteria && criteria > 0) {
+                if (criteria && criteria.length > 0) {
                     console.log("Set criteria: " + criteria);
                     this.selectedSort.criteria = criteria;
                 }
             },
             setDirection: function (direction) {
-                if (direction && direction > 0) {
+                if (direction && direction.length > 0) {
                     console.log("Set direction: " + direction);
                     this.selectedSort.direction = direction;
                 }
@@ -167,18 +167,8 @@
                         records.push(record);
                     });
                     this.allRecords = records;
-                    if (this.inputCriteria && this.inputCriteria.length > 0) {
-                        console.log("Input criteria: " + this.inputCriteria);
-                        this.setCriteria(this.inputCriteria);
-                    } else {
-                        console.log('No input criteria provided.');
-                    }
-                    if (this.inputDirection && this.inputDirection.length > 0) {
-                        console.log("Input direction: " + this.inputDirection);
-                        this.setDirection(this.inputDirection);
-                    } else {
-                        console.log('No input direction provided.');
-                    }
+                    this.setCriteria(this.inputCriteria);
+                    this.setDirection(this.inputDirection);
                     this.sortRecords(this.selectedSort.criteria, this.selectedSort.direction);
                 }
             },
