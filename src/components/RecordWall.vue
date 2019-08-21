@@ -20,9 +20,16 @@
                 </b-form-radio-group>
 
                 <b-form-select
-                  v-model="sortCriteria"
-                  :options="sortCriteriaOptions"
+                  v-model="selectedSort"
                   name="sort-criteria-select">
+                  <optgroup label="Artists">
+                    <option :value="{ criteria: 'artist', direction: 'asc' }">Artist: A → Z</option>
+                    <option :value="{ criteria: 'artist', direction: 'desc' }">Artist: Z → A</option>
+                  </optgroup>
+                  <optgroup label="Date Added">
+                    <option :value="{ criteria: 'dateAdded', direction: 'asc' }">Date Added: Old → New</option>
+                    <option :value="{ criteria: 'dateAdded', direction: 'desc' }">Date Added: New → Old</option>
+                  </optgroup>
                 </b-form-select>
               </b-form-group>
             </b-nav-form>
@@ -59,32 +66,14 @@
             return {
                 allRecords: [],
                 searchInput: '',
-                sortCriteria: 'artist',
-                sortCriteriaOptions: [
-                    { text: 'Artist', value: 'artist' },
-                    { text: 'Date Added', value: 'dateAdded' }
-                ],
-                sortDirection: 'asc',
-                setlistFmResults: []
+                setlistFmResults: [],
+                selectedSort: {
+                    criteria: 'artist',
+                    direction: 'asc'
+                }
             }
         },
         computed: {
-            sortDirectionOptions: function () {
-                var criteria = this.sortCriteria;
-                var ascOption = { value: 'asc'};
-                var descOption = { value: 'desc'};
-                switch (criteria) {
-                  case "artist":
-                      ascOption.text = 'A → Z';
-                      descOption.text = 'Z → A';
-                      break;
-                  case "dateAdded":
-                      ascOption.text = 'Old → New';
-                      descOption.text = 'New → Old';
-                      break;
-                }
-                return [ascOption, descOption];
-            },
             viewRecords: function () {
                 var newViewRecords = [];
                 console.log("Input length is " + this.searchInput.length);
@@ -112,18 +101,17 @@
             }
         },
         watch: {
-            sortCriteria: function () {
-                this.sortRecords();
+            selectedSort: function (newSort) {
+                this.sortRecords(newSort.criteria, newSort.direction);
             },
-            sortDirection: function () {
-                this.sortRecords();
-            }
         },
         mounted() {
             this.fetchRecordData();
-            this.fetchSetlistFmData();
         },
         methods: {
+            setSortFromUrl: function () {
+
+            },
             fetchRecordData: function () {
                 this.getCollectionForUser(process.env.DISCOGS_USERNAME, this.setDataFromDiscogs);
             },
@@ -159,33 +147,32 @@
                     this.sortRecords();
                 }
             },
-            fetchSetlistFmData: function () {
-                this.getDataFromSetlistFm(process.env.SETLISTFM_USERNAME, this.setDataFromSetlistFm);
-            },
-            getDataFromSetlistFm: function (username, callback) {
-                console.log("Attempting to get setlists for " + username + "...");
-
-                var Setlistfm = require('setlistfm-js');
-                var setlistfm = new Setlistfm({
-                    key: process.env.SETLISTFM_KEY
-                });
-
-                setlistfm.getUserAttended(username, {
-                    p: 1
-                })
-                    .then(callback)
-                    .catch(function(error) {
-                        // Returns error
-                    });
-            },
-            setDataFromSetlistFm: function (data) {
-                console.log("Setlist.fm data returned:");
-                console.log(data);
-                this.setlistFmResults = data;
-            },
-            sortRecords: function () {
-                var criteria = this.sortCriteria;
-                var isDesc = ( this.sortDirection === 'desc' );
+            // fetchSetlistFmData: function () {
+            //     this.getDataFromSetlistFm(process.env.SETLISTFM_USERNAME, this.setDataFromSetlistFm);
+            // },
+            // getDataFromSetlistFm: function (username, callback) {
+            //     console.log("Attempting to get setlists for " + username + "...");
+            //
+            //     var Setlistfm = require('setlistfm-js');
+            //     var setlistfm = new Setlistfm({
+            //         key: process.env.SETLISTFM_KEY
+            //     });
+            //
+            //     setlistfm.getUserAttended(username, {
+            //         p: 1
+            //     })
+            //         .then(callback)
+            //         .catch(function(error) {
+            //             // Returns error
+            //         });
+            // },
+            // setDataFromSetlistFm: function (data) {
+            //     console.log("Setlist.fm data returned:");
+            //     console.log(data);
+            //     this.setlistFmResults = data;
+            // },
+            sortRecords: function (criteria, direction) {
+                var isDesc = ( direction === 'desc' );
                 this.allRecords.sort(function (a, b) {
                     var comparison;
                     switch (criteria) {
