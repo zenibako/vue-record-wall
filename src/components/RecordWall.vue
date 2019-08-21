@@ -167,8 +167,18 @@
                         records.push(record);
                     });
                     this.allRecords = records;
-                    this.setCriteria(this.inputCriteria);
-                    this.setDirection(this.inputDirection);
+                    if (this.inputCriteria && this.inputCriteria > 0) {
+                        console.log("Input criteria: " + this.inputCriteria);
+                        this.setCriteria(this.inputCriteria);
+                    } else {
+                        console.log('No input criteria provided.');
+                    }
+                    if (this.inputDirection && this.inputDirection > 0) {
+                        console.log("Input direction: " + this.inputDirection);
+                        this.setDirection(this.inputDirection);
+                    } else {
+                        console.log('No input direction provided.');
+                    }
                     this.sortRecords(this.selectedSort.criteria, this.selectedSort.direction);
                 }
             },
