@@ -3,7 +3,7 @@ const path = require('path');
 const history = require('connect-history-api-fallback');
 
 const bodyParser = require('body-parser');
-const router = require('./routes/index.js');
+//const router = require('./routes/index.js');
 
 const app = express();
 
