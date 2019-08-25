@@ -17,9 +17,8 @@
     "bootstrap": "^4.3.1",
     "bootstrap-vue": "^2.0.0-rc.28",
     "chalk": "latest",
-    "connect-history-api-fallback": "latest",
-    "copy-webpack-plugin": "^5.0.4",
     "cors": "^2.8.5",
+    "disconnect": "^1.2.1",
     "express": "^4.17.1",
     "moment": "^2.24.0",
     "mongoose": "^5.6.10",
@@ -30,11 +29,9 @@
     "querystring-browser": "^1.0.4",
     "rimraf": "latest",
     "semver": "latest",
-    "setlistfm-js": "^1.1.0",
-    "uglifyjs-webpack-plugin": "^2.2.0",
+    "setlistfm-js": "^1.1.0"
     "vue": "^2.6.10",
-    "vue-router": "^3.1.2",
-    "webpack-merge": "^4.2.1"
+    "vue-router": "^3.1.2"
   },
   "browserslist": [
     "> 1%",
@@ -48,7 +45,6 @@
     "babel-preset-stage-3": "^6.24.1",
     "cross-env": "^5.0.5",
     "css-loader": "^3.2.0",
-    "disconnect": "^1.2.1",
     "file-loader": "^1.1.4",
     "html-webpack-plugin": "^3.2.0",
     "jquery": "^3.4.1",
@@ -62,7 +58,11 @@
     "vue-template-compiler": "^2.6.10",
     "webpack": "^4.39.2",
     "webpack-cli": "^3.3.7",
-    "webpack-dev-server": "^3.8.0"
+    "webpack-dev-server": "^3.8.0",
+    "webpack-merge": "^4.2.1",
+    "uglifyjs-webpack-plugin": "^2.2.0",
+    "copy-webpack-plugin": "^5.0.4",
+    "connect-history-api-fallback": "latest"
   },
   "engines": {
     "node": ">= 6.0.0",
