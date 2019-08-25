@@ -1,6 +1,7 @@
 <template>
   <div class="record-container" @mouseover="showInfo = true" @mouseout="showInfo = false">
-    <b-img fluid-grow v-bind:src="record.imageUrl" class="image"></b-img>
+    <b-img v-if="record.imageUrl" fluid-grow v-bind:src="record.imageUrl" class="image"></b-img>
+    <b-img v-else fluid-grow src="src/assets/blank.png" class="image"></b-img>
     <div class="overlay">
       <div class="text">
         <div class="font-weight-bold">

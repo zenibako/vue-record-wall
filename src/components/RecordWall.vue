@@ -51,6 +51,7 @@
 
 <script>
     import RecordTile from "./RecordTile";
+    import { getRecords }  from '../repository'
     export default {
         name: 'app',
         components: {RecordTile},
@@ -128,49 +129,17 @@
                 }
             },
             fetchRecordData: function () {
-                var inputUser = this.inputUserId;
-                if (inputUser && inputUser.length > 0) this.username = inputUser;
-                if (this.username) {
-                    console.log("Input username: " + inputUser);
-                    this.getCollectionForUser(this.username, this.setDataFromDiscogs);
-                } else {
-                    console.log('No username provided.');
-                }
+                console.log("Getting records from backend...");
+                getRecords()
+                    .then(data => this.setRecordData(data.records))
+                    .catch((err => alert(err)));
             },
-            getReleaseFromDiscogs: function (releaseId, callback) {
-                var Discogs = require('disconnect').Client;
-                var db = new Discogs().database();
-                return db.getRelease(releaseId, callback);
-            },
-            getCollectionForUser: function (username, callback) {
-                console.log("Get collection for username " + username + "...");
-                var Discogs = require('disconnect').Client;
-                var col = new Discogs({userToken: process.env.DISCOGS_TOKEN}).user().collection();
-                return col.getReleases(username, 0, {page: 1, per_page: 9999}, callback);
-            },
-            setDataFromDiscogs: function (err, data) {
-                console.log("Discogs data returned:");
-                console.log(data);
-                var releases = data.releases;
-                if (releases) {
-                    var records = [];
-                    releases.forEach(function (release) {
-                        var record = {
-                            id: release.id,
-                            title: release.basic_information.title,
-                            year: release.basic_information.year,
-                            imageUrl: release.basic_information.cover_image,
-                            artists: release.basic_information.artists,
-                            dateAdded: release.date_added,
-                            notes: release.notes
-                        };
-                        records.push(record);
-                    });
-                    this.allRecords = records;
-                    this.setCriteria(this.inputCriteria);
-                    this.setDirection(this.inputDirection);
-                    this.sortRecords(this.selectedSort.criteria, this.selectedSort.direction);
-                }
+            setRecordData: function (records) {
+                console.log("Setting " + records.length + " records...");
+                this.allRecords = records;
+                this.setCriteria(this.inputCriteria);
+                this.setDirection(this.inputDirection);
+                this.sortRecords(this.selectedSort.criteria, this.selectedSort.direction);
             },
             // fetchSetlistFmData: function () {
             //     this.getDataFromSetlistFm(process.env.SETLISTFM_USERNAME, this.setDataFromSetlistFm);
