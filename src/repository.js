@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const PORT = process.env.PORT || 8080;
-const BASE_URL = 'http://localhost:' + PORT;
+const BASE_URL = process.env.NODE_ENV === 'production' ? 'https://mai-record-wall.herokuapp.com' : 'http://localhost:' + PORT;
 
 export function getRecords() {
   return axios.get(`${BASE_URL}/api/record/list`)
