@@ -11,6 +11,7 @@
     "start": "node server.js"
   },
   "dependencies": {
+    "body-parser": "latest",
     "bootstrap": "^4.3.1",
     "bootstrap-vue": "^2.0.0-rc.28",
     "chalk": "latest",
@@ -28,8 +29,7 @@
     "uglifyjs-webpack-plugin": "^2.2.0",
     "vue": "^2.6.10",
     "vue-router": "^3.1.2",
-    "webpack-merge": "^4.2.1",
-    "body-parser": "latest"
+    "webpack-merge": "^4.2.1"
   },
   "browserslist": [
     "> 1%",
