@@ -145,7 +145,7 @@
             getCollectionForUser: function (username, callback) {
                 console.log("Get collection for username " + username + "...");
                 var Discogs = require('disconnect').Client;
-                var col = new Discogs({userToken: process.env.DISCOGS_TOKEN}).user().collection();
+                var col = new Discogs({userToken: process.env.VUE_APP_DISCOGS_TOKEN}).user().collection();
                 return col.getReleases(username, 0, {page: 1, per_page: 9999}, callback);
             },
             setDataFromDiscogs: function (err, data) {
