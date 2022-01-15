@@ -50,7 +50,7 @@
     "mem": ">=4.0.0",
     "mini-css-extract-plugin": "^0.8.0",
     "ora": "^3.4.0",
-    "shelljs": "^0.8.3",
+    "shelljs": "^0.8.5",
     "uglifyjs-3-webpack-plugin": "^1.2.4",
     "vue-loader": "^15.7.1",
     "vue-style-loader": "^4.1.2",
