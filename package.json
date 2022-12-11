@@ -17,7 +17,7 @@
     "chalk": "latest",
     "connect-history-api-fallback": "latest",
     "copy-webpack-plugin": "^5.0.4",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "node-spotify-api": "^1.1.1",
     "optimize-css-assets-webpack-plugin": "^5.0.3",
     "postcss-loader": "^3.0.0",
